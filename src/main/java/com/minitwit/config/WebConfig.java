@@ -20,19 +20,25 @@ import com.minitwit.model.Message;
 import com.minitwit.model.User;
 import com.minitwit.service.impl.MiniTwitService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.stereotype.Component;
 import spark.ModelAndView;
 import spark.Request;
+import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 import spark.utils.StringUtils;
 
+@Component
 public class WebConfig {
 	
 	private static final String USER_SESSION_ID = "user";
 	private MiniTwitService service;
-	 
 
-	public WebConfig(MiniTwitService service) {
+	@Autowired
+	public WebConfig(MiniTwitService service, ServerProperties serverProperties) {
 		this.service = service;
+		Spark.port(serverProperties.getPort());
 		staticFileLocation("/public");
 		setupRoutes();
 	}
@@ -185,7 +191,7 @@ public class WebConfig {
 			User user = new User();
 			try {
 				MultiMap<String> params = new MultiMap<String>();
-				UrlEncoded.decodeTo(req.body(), params, "UTF-8", -1);
+				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 				BeanUtils.populate(user, params);
 			} catch (Exception e) {
 				halt(501);
@@ -230,7 +236,7 @@ public class WebConfig {
 			User user = new User();
 			try {
 				MultiMap<String> params = new MultiMap<String>();
-				UrlEncoded.decodeTo(req.body(), params, "UTF-8", -1);
+				UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 				BeanUtils.populate(user, params);
 			} catch (Exception e) {
 				halt(501);
@@ -270,7 +276,7 @@ public class WebConfig {
 		post("/message", (req, res) -> {
 			User user = getAuthenticatedUser(req);
 			MultiMap<String> params = new MultiMap<String>();
-			UrlEncoded.decodeTo(req.body(), params, "UTF-8", -1);
+			UrlEncoded.decodeTo(req.body(), params, "UTF-8");
 			Message m = new Message();
 			m.setUserId(user.getId());
 			m.setPubDate(new Date());

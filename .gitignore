@@ -29,5 +29,9 @@ local.properties
 .buildpath
 .project
 
+# IntelliJ
+.idea
+*.iml
+
 #Target directory
 target/*

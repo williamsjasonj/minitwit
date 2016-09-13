@@ -1,21 +1,29 @@
 package com.minitwit;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.minitwit.config.WebConfig;
-import com.minitwit.service.impl.MiniTwitService;
 
+@EnableConfigurationProperties({ ServerProperties.class }) // Use application.yml for config
 @Configuration
 @ComponentScan({ "com.minitwit" })
 public class App {
 	
 	public static void main(String[] args) {
-    	AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(App.class);
-    	new WebConfig(ctx.getBean(MiniTwitService.class));
-        ctx.registerShutdownHook();
+		SpringApplication app = new SpringApplication(App.class);
+		// disable Spring's web server setup - let spark configure jetty
+		app.setWebEnvironment(false);
+
+		ConfigurableApplicationContext ctx = app.run(args);
+		// initialize web service
+		ctx.getBean(WebConfig.class);
+		// enable spark graceful shutdown
+		ctx.registerShutdownHook();
     }
-    
     
 }
