@@ -8,10 +8,10 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-@Configuration
+//@Configuration
 public class DatabaseConfig {
 
-	@Bean
+	//@Bean
 	public DataSource dataSource() {
 		
 		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();

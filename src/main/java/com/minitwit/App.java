@@ -1,6 +1,7 @@
 package com.minitwit;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.minitwit.config.WebConfig;
 
+@EnableAutoConfiguration
 @EnableConfigurationProperties({ ServerProperties.class }) // Use application.yml for config
 @Configuration
 @ComponentScan({ "com.minitwit" })

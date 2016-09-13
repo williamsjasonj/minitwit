@@ -33,7 +33,7 @@ New features in karlkfi/minitwit:
 1. Run the docker image in the background
 
     ```
-    docker run -d --name minitwit -e "SERVER_PORT=80" karlkfi/minitwit
+    docker run -d --name minitwit karlkfi/minitwit
     ```
 
 1. Find the docker container's IP
@@ -48,20 +48,68 @@ New features in karlkfi/minitwit:
     http://${MINITWIT_IP}:${SERVER_PORT}/
     ```
 
-1. (Optional) Sign up as a new user
+1. Sign up as a new user
 
     If your e-mail address has an associated Gravatar image, this will be used as your profile image.
 
 1. Log in
 
-    Use the credentials created in the previous step or those of one of the following existing users:
+    Use the credentials created in the previous step to log in.
 
-    | Username | Password |
-    |----------|----------|
-    | user001 | user001 |
-    | user002 | user002 |
-    | ... | ... |
-    | user010 | user010 |
+1. Post a message
+
+1. See your message added to the timeline
+
+## Configuration
+
+There are several ways to configure MiniTwit using Spring's ServerProperties, but only a few of them are being mapped to SparkJava.
+
+The following environment variables can be passed to MiniTwit through Docker using environment variables:
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| SERVER_PORT | Integer | 80 | Port on which the server will listen |
+| SPRING_DATASOURCE_URL | String | jdbc:hsqldb:<db-info> | JDBC path to the database |
+| SPRING_DATASOURCE_USERNAME | String | jdbc:hsqldb:<db-info> | Database username |
+| SPRING_DATASOURCE_PASSWORD | String | &lt;null&gt;| Database password |
+| SPRING_DATASOURCE_DRIVER-CLASS-NAME | String | &lt;auto-detect&gt; | JDBC Driver class |
+| SPRING_DATASOURCE_PLATFORM | String | hsqldb | Name of the platform-specific schema to use (hsqldb or mysql) |
+
+## Databases
+
+By default, MiniTwit uses HyperSQL as an in-memory database.
+
+For persistent storage, use MySQL.
+
+### Example MySQL Docker Deployment
+
+```
+# create mysql environment file
+cat > mysql.env << EOF
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=minitwit
+MYSQL_USER=minitwit
+MYSQL_PASSWORD=minitwit
+EOF
+
+# start mysql server
+docker run -d --name=mysql --env-file=mysql.env mysql:5.7.15
+
+# find mysql IP
+MYSQL_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql)
+
+# create minitwit environment file
+cat > minitwit.env << EOF
+SPRING_DATASOURCE_URL=jdbc:mysql://${MYSQL_IP}:3306/minitwit?autoReconnect=true&useSSL=false
+SPRING_DATASOURCE_USERNAME=minitwit
+SPRING_DATASOURCE_PASSWORD=minitwit
+SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
+SPRING_DATASOURCE_PLATFORM=mysql
+EOF
+
+# start minitwit server
+docker run -d --name minitwit --env-file=minitwit.env karlkfi/minitwit
+```
 
 ##License
 MIT License
