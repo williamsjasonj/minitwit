@@ -48,7 +48,7 @@ New features in karlkfi/minitwit:
     http://${MINITWIT_IP}:${SERVER_PORT}/
     ```
 
-1. (Optinal) Sign up as a new user
+1. (Optional) Sign up as a new user
 
     If your e-mail address has an associated Gravatar image, this will be used as your profile image.
 
