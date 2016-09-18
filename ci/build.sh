@@ -23,3 +23,12 @@ DOCKER_IMG_TAR="minitwit-${GIT_REV_SHORT}.tar"
 echo "DOCKER_IMG_TAR: ${DOCKER_IMG_TAR}"
 
 docker save --output "${DOCKER_IMG_TAR}" "${DOCKER_IMG_TAG}"
+
+OUT_FILE="${OUT_FILE:-}"
+if [ -n "${OUT_FILE}" ]; then
+  cat >> "${OUT_FILE}" << EOF
+GIT_REV_SHORT=${GIT_REV_SHORT}
+DOCKER_IMG_TAG=${DOCKER_IMG_TAG}
+DOCKER_IMG_TAR=${DOCKER_IMG_TAR}
+EOF
+fi

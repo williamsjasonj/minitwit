@@ -16,3 +16,8 @@ docker load --input "${DOCKER_IMG_TAR}"
 
 DOCKER_CID="$(docker run -d "${DOCKER_IMG_TAG}")"
 echo "DOCKER_CID: ${DOCKER_CID}"
+
+OUT_FILE="${OUT_FILE:-}"
+if [ -n "${OUT_FILE}" ]; then
+  echo "DOCKER_CID=${DOCKER_CID}" >> "${OUT_FILE}"
+fi
