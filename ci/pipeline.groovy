@@ -12,7 +12,9 @@ node {
 
     stash name: 'build-output', includes: "${build_env_file},${build_props['DOCKER_IMG_TAR']}"
 }
+
 // checkpoint 'Completed Build'
+
 node {
     stage 'Test'
     git url: 'http://github.com/karlkfi/minitwit', branch: 'ci'
