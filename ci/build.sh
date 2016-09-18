@@ -9,9 +9,6 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
 
 cd "${script_dir}"
 
-TEMP_FILE="$(mktemp ${BUILD_TAG}-XXXXXX)"
-echo "TEMP_FILE: ${TEMP_FILE}"
-
 GIT_REV_SHORT="$(git rev-parse --short HEAD)"
 echo "GIT_REV_SHORT: ${GIT_REV_SHORT}"
 
