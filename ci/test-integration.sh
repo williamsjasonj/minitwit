@@ -59,10 +59,8 @@ while [[ ${i} < 200 ]]; do
 done
 
 STATUS_CODE="$(curl -I -s "http://${CONTAINER_IP}/public" | grep "HTTP/1.1" | cut -d' ' -f2)"
-echo $STATUS_CODE
 
 USERNAME="$(date | md5sum | head -c 10)"
-echo $USERNAME
 
 curl -v -f -X POST \
   --data "username=${USERNAME}&email=test@mailinator.com&password=password&password2=password" \
@@ -73,7 +71,6 @@ curl -v -f -X POST -c "${COOKIE_JAR}" \
   "http://${CONTAINER_IP}/login"
 
 MESSAGE="$(date | md5sum | head -c 10)"
-echo $MESSAGE
 curl -v -f -X POST -b "${COOKIE_JAR}" \
   --data "text=secret-test-message" \
   "http://${CONTAINER_IP}/message"
