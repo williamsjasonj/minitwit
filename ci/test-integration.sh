@@ -21,7 +21,7 @@ MYSQL_USER=minitwit
 MYSQL_PASSWORD=minitwit
 EOF
 
-docker rm -f minitwit mysql
+#docker rm -f minitwit mysql
 # start mysql server
 MYSQL_CONTAINER_ID="$(docker run -d --name=mysql --env-file=mysql.env mysql:5.7.15)"
 
