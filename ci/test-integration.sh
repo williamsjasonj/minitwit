@@ -10,7 +10,7 @@ cd "${script_dir}"
 
 DOCKER_IMG="${DOCKER_IMG:-williamsjasonj/minitwit}"
 
-COOKIE_JAR="cookies-$(date | md5 | head -c 10).txt"
+COOKIE_JAR="cookies-$(date | md5sum | head -c 10).txt"
 
 # create mysql environment file
 cat > mysql.env << EOF
@@ -61,7 +61,7 @@ done
 STATUS_CODE="$(curl -I -s "http://${CONTAINER_IP}/public" | grep "HTTP/1.1" | cut -d' ' -f2)"
 echo $STATUS_CODE
 
-USERNAME="$(date | md5 | head -c 10)"
+USERNAME="$(date | md5sum | head -c 10)"
 echo $USERNAME
 
 curl -v -f -X POST \
@@ -72,7 +72,7 @@ curl -v -f -X POST -c "${COOKIE_JAR}" \
   --data "username=${USERNAME}&password=password" \
   "http://${CONTAINER_IP}/login"
 
-MESSAGE="$(date | md5 | head -c 10)"
+MESSAGE="$(date | md5sum | head -c 10)"
 echo $MESSAGE
 curl -v -f -X POST -b "${COOKIE_JAR}" \
   --data "text=secret-test-message" \
