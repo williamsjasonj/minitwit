@@ -22,10 +22,10 @@ MYSQL_PASSWORD=minitwit
 EOF
 
 # start mysql server
-$ docker run -d --name=mysql --env-file=mysql.env mysql:5.7.15
+docker run -d --name=mysql --env-file=mysql.env mysql:5.7.15
 
 # find mysql IP
-$ MYSQL_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql)
+MYSQL_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql)
 
 # create minitwit environment file
 cat > minitwit.env << EOF
