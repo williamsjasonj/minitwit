@@ -26,7 +26,7 @@ MYSQL_CONTAINER_ID="$(docker run -d --name=mysql --env-file=mysql.env mysql:5.7.
 
 # find mysql IP
 MYSQL_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql)
-
+sleep 30
 # create minitwit environment file
 cat > minitwit.env << EOF
 SPRING_DATASOURCE_URL=jdbc:mysql://${MYSQL_IP}:3306/minitwit?autoReconnect=true&useSSL=false
