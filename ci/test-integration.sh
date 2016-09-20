@@ -9,12 +9,12 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
 
 cd "${script_dir}"
 
-DOCKER_IMG="${DOCKER_IMG:-karlkfi/minitwit}"
+DOCKER_IMG="${DOCKER_IMG:-williamsjasonj/minitwit}"
 
 COOKIE_JAR="cookies-$(date | md5sum | head -c 10).txt"
 
 # create mysql environment file
-$ cat > mysql.env << EOF
+cat > mysql.env << EOF
 MYSQL_ROOT_PASSWORD=root
 MYSQL_DATABASE=minitwit
 MYSQL_USER=minitwit
