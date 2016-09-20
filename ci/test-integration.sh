@@ -13,7 +13,30 @@ DOCKER_IMG="${DOCKER_IMG:-karlkfi/minitwit}"
 
 COOKIE_JAR="cookies-$(date | md5sum | head -c 10).txt"
 
-CONTAINER_ID="$(docker run -d "${DOCKER_IMG}")"
+# create mysql environment file
+$ cat > mysql.env << EOF
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=minitwit
+MYSQL_USER=minitwit
+MYSQL_PASSWORD=minitwit
+EOF
+
+# start mysql server
+$ docker run -d --name=mysql --env-file=mysql.env mysql:5.7.15
+
+# find mysql IP
+$ MYSQL_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql)
+
+# create minitwit environment file
+cat > minitwit.env << EOF
+SPRING_DATASOURCE_URL=jdbc:mysql://${MYSQL_IP}:3306/minitwit?autoReconnect=true&useSSL=false
+SPRING_DATASOURCE_USERNAME=minitwit
+SPRING_DATASOURCE_PASSWORD=minitwit
+SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
+SPRING_DATASOURCE_PLATFORM=mysql
+EOF
+
+CONTAINER_ID="$(docker run -d --env-file=minitwit.env "${DOCKER_IMG}")"
 
 function cleanup {
   rm -f "${COOKIE_JAR}"
