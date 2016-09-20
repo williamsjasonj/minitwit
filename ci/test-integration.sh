@@ -21,8 +21,9 @@ MYSQL_USER=minitwit
 MYSQL_PASSWORD=minitwit
 EOF
 
+docker rm -f minitwit mysql
 # start mysql server
-docker run -d --name=mysql --env-file=mysql.env mysql:5.7.15
+MYSQL_CONTAINER_ID="$(docker run -d --name=mysql --env-file=mysql.env mysql:5.7.15)"
 
 # find mysql IP
 MYSQL_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql)
@@ -36,11 +37,11 @@ SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
 SPRING_DATASOURCE_PLATFORM=mysql
 EOF
 
-CONTAINER_ID="$(docker run -d --env-file=minitwit.env "${DOCKER_IMG}")"
+CONTAINER_ID="$(docker run -d --name=minitwit --env-file=minitwit.env "${DOCKER_IMG}")"
 
 function cleanup {
   rm -f "${COOKIE_JAR}"
-  docker rm -f "$CONTAINER_ID"
+  docker rm -f "$CONTAINER_ID" "$MYSQL_CONTAINER_ID"
 }
 trap cleanup EXIT
 
