@@ -9,7 +9,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
 
 cd "${script_dir}"
 
-DOCKER_IMG="${DOCKER_IMG:-williamsjasonj/minitwit}"
+DOCKER_IMG="${DOCKER_IMG:-karlkfi/minitwit}"
 
 COOKIE_JAR="cookies-$(date | md5sum | head -c 10).txt"
 
