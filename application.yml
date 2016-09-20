@@ -8,6 +8,6 @@ spring:
     #username: sa
     #password: ''
     platform: hsqldb
-    #schema: classpath*:/sql/schema-${platform}.sql
-    #data: classpath*:/sql/data.sql
+    #schema: classpath*:/schema-${platform}.sql
+    #data: classpath*:/test-data.sql
     initialize: true
